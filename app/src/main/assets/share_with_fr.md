@@ -1,0 +1,1 @@
+Partagez vos informations publiques avec vos amis. Une fois fait, demandez leur de vous partager leurs propres informations. Dès lors, échangez des messages de manière très simple.

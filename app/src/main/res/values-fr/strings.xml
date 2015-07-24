@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- AUTO-GENERATED -->
+<string name="app_name">CypherX</string>
+<string name="generating">Génération des clés&#8230;</string>
+<string name="cypherx_preferences">CypherX Preferences</string>
+<string name="cypherx_sync">Synchroniser</string>
+<string name="share">Partagez vos informations publiques pour commencer à recevoir des messages</string>
+<string name="device_added">Appareil ajouté avec succès</string>
+<string name="device_add_error">Appareil non ajouté</string>
+<string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lorem turpis, rutrum sit amet ipsum eget, convallis faucibus diam. Nunc dignissim lectus ac turpis consectetur fringilla. Donec semper volutpat nunc et eleifend. Vestibulum diam massa, sodales vel laoreet viverra, cursus et orci. Aenean ut massa placerat, tincidunt dui sit amet, blandit mauris. Pellentesque sit amet tempor urna. Aliquam maximus augue quis vestibulum lobortis. In pellentesque pellentesque purus. Phasellus justo dui, congue a velit non, mollis malesuada leo. In hac habitasse platea dictumst. Cras lacinia gravida vehicula. Etiam quis nisl nisi. Aliquam laoreet, elit et aliquam faucibus, urna ante cursus mauris, id feugiat libero nunc non ipsum. Etiam hendrerit velit nulla, quis imperdiet eros euismod et. Nullam molestie tempor lectus non elementum. Aliquam eget quam vel ligula dignissim sollicitudin ut non dui. Integer luctus vel diam ut consequat. Phasellus faucibus eros ex, nec sollicitudin mauris aliquam non. Duis sed justo lorem. Phasellus aliquet sapien vel diam imperdiet, vel ullamcorper enim cursus. Vestibulum ullamcorper tincidunt purus, vel tincidunt ipsum dapibus nec. Maecenas maximus ligula at accumsan blandit. Curabitur risus lectus, laoreet at ultrices sit amet, laoreet a ex. Praesent consequat sollicitudin est, sed posuere lorem ultrices sit amet. Cras quis turpis eleifend, dictum massa a, imperdiet risus. Praesent vitae lorem in ligula molestie pretium ac in diam. Nulla fringilla in augue et imperdiet. Fusce consequat fringilla mi pellentesque tincidunt. Suspendisse vulputate elementum lacus, quis hendrerit est porttitor et.</string>
+<string name="share_via">Partager via</string>
+<string name="action_share">Partager via</string>
+<string name="personnal_data_subject">Je te partage mes informations publiques CypherX</string>
+<string name="personnal_data_subject_third_party">Partager un message chiffré avec vos informations</string>
+<string name="clone_me">Clone moi</string>
+<string name="chat">Chat</string>
+<string name="main">Accueil</string>
+<string name="tor">Tor</string>
+<string name="push">Push</string>
+<string name="empty_devices">Vous n\'avez actuellement aucun appareil enregistré. Partagez vos informations et demandez les leurs</string>
+<string name="sending">Envoi en cours&#8230;</string>
+<string name="not_sent">Non envoyé</string>
+<string name="sent">Envoyé</string>
+<string name="received">Reçu</string>
+<string name="send">Envoyer</string>
+<string name="decoding">Déchiffrement&#8230;</string>
+<string name="device_information_date">Dernier message : %1$s</string>
+<string name="device_information_no_message">Aucun message reçu</string>
+<string name="market_orbot">market://search?q=pname:org.torproject.android</string>
+<string name="install_orbot_">Installer Orbot?</string>
+<string name="you_must_have_orbot">Vous devez avoir l\'application Orbot et lancée sur votre appareil avant de pouvoir utiliser le mode anonyme passant par Tor. Voulez-vous l\'installer ?</string>
+<string name="yes">Oui</string>
+<string name="no">No</string>
+<string name="always">Toujours</string>
+<string name="start_orbot_">Démarrer Orbot</string>
+<string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Orbot n\'est pas lancé. Voulez-vous le lancer ?</string>
+<string name="secure_connection_active_">Connection sécurisée active :</string>
+<string name="markdown_share">share_fr.md</string>
+<string name="markdown_encrypted">encrypted_fr.md</string>
+<string name="markdown_share_with">share_with_fr.md</string>
+<string name="markdown_debug">debug_fr.md</string>
+<string name="markdown_enhance">enhance_fr.md</string>
+</resources>

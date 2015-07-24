@@ -1,0 +1,1 @@
+Share your public information with your friend easily using any other application. Then, ask them for theirs. When you save their public information, you can start sending messages and receiving them. It is straightforward.

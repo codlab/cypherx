@@ -1,0 +1,1 @@
+As an Open Source app, the Pull Request are welcomed. You can also fork this app and whatever you need from it. Feel free to send any message to me directly.

@@ -1,0 +1,1 @@
+L'application est Open Source et c'est pourquoi les Pull Request sont les bienvenues. Vous pouvez aussi forker l'application, prendre des pièces dont vous pouvez avoir besoin. N'hésitez pas à m'écrire un message.

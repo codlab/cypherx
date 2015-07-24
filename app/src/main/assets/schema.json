@@ -1,0 +1,71 @@
+{
+  "packageName": "greendao",
+  "databaseVersion": 5,
+  "tables": [
+    {
+      "name": "Config",
+      "properties": [
+        {
+          "type": "string",
+          "name": "name",
+          "mandatory": true
+        },
+        {
+          "type": "string",
+          "name": "content",
+          "mandatory": true
+        }
+      ]
+    },
+    {
+      "name": "Device",
+      "properties": [
+        {
+          "type": "string",
+          "name": "guid",
+          "mandatory": true
+        },
+        {
+          "type": "string",
+          "name": "key",
+          "mandatory": true
+        }
+      ]
+    },
+    {
+      "name": "Message",
+      "properties": [
+        {
+          "type": "string",
+          "name": "device_guid",
+          "mandatory": true
+        },
+        {
+          "type": "string",
+          "name": "encrypted_content",
+          "mandatory": true
+        },
+        {
+          "type": "string",
+          "name": "encrypted_content_local",
+        },
+        {
+          "type": "date",
+          "name": "received_at",
+          "mandatory": true
+        },
+        {
+          "type": "integer",
+          "name": "type",
+          "mandatory": true
+        },
+        {
+          "type": "string",
+          "name": "signature",
+        }
+      ]
+    }
+  ],
+  "relationships": [
+  ]
+}
