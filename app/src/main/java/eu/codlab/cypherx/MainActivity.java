@@ -136,7 +136,13 @@ public class MainActivity extends SystemFittableActivity {
             ApplicationController.getInstance().setPushAuthorized(true);
             GcmIntentService.start(this);
         }
+    }
 
+    @OnClick(R.id.clone)
+    public void onClone() {
+        Uri uri = Uri.parse("https://github.com/codlab/cypherx");
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(browserIntent);
     }
 
     @Override
@@ -369,7 +375,7 @@ public class MainActivity extends SystemFittableActivity {
         _actionbar_toggle.onConfigurationChanged(newConfig);
 
         if (changed) {
-            if(_tuto_helper != null)
+            if (_tuto_helper != null)
                 _tuto_helper.clean();
             _tuto_helper = new TutoHelper();
         }
