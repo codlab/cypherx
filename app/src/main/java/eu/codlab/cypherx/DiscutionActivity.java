@@ -195,6 +195,12 @@ public class DiscutionActivity extends SystemFittableActivity {
 
         EventBus.getDefault().postSticky(new EventProxyOk());
 
+        Device device = getDevice();
+        if (device != null) {
+            device.setLast_open_at(new Date());
+            DevicesController.getInstance(this)
+                    .getDao().insertOrReplace(device);
+        }
     }
 
     @Override
@@ -319,6 +325,7 @@ public class DiscutionActivity extends SystemFittableActivity {
         evt.status = message_entity.getStatusDateMessage();
         evt.receiver = event.receiver;
         evt.content = final_message;
+        evt.position = event.position;
 
         if (event.receiver != null && event.receiver.getId() == event.id) {
             EventBus.getDefault().post(evt);
@@ -330,6 +337,7 @@ public class DiscutionActivity extends SystemFittableActivity {
         if (event.receiver != null && event.receiver.getId() == event.id) {
             event.receiver._message.setText(event.content);
             event.receiver._status.setText(event.status);
+            event.receiver.setCursorId(event.position);
         }
     }
 }

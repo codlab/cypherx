@@ -13,12 +13,14 @@ import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 import eu.codlab.cypherx.ApplicationController;
+import eu.codlab.cypherx.BuildConfig;
 import eu.codlab.cypherx.events.EventProxyOk;
 import eu.codlab.cypherx.proxy.ProxyController;
 import eu.codlab.cypherx.utils.WsseToken;
 import eu.codlab.cypherx.webservice.models.Authent;
 import eu.codlab.cypherx.webservice.models.DistantMessages;
 import eu.codlab.cypherx.webservice.models.PostMessage;
+import eu.codlab.cypherx.webservice.models.PutPush;
 import greendao.Message;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -47,6 +49,12 @@ public class WebserviceController {
         void onMessagePosted(List<DistantMessages> messages);
 
         void onMessageError();
+    }
+
+    public interface IPush {
+        void onRegisterDone(Response response);
+
+        void onRegisterError();
     }
 
     public interface IGet {
@@ -78,7 +86,7 @@ public class WebserviceController {
 
     private void recreateRestAdapter() {
         RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setEndpoint("https://cypher.codlab.eu/")
+                .setEndpoint(BuildConfig.ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
@@ -364,6 +372,72 @@ public class WebserviceController {
         };
 
         _web_interface.postMessages(message_to_post, first_call);
+    }
+
+    public void registerPush(String gcm,
+                            final IPush callback) {
+        final PutPush to_push = new PutPush();
+        to_push.gcm = gcm;
+
+        registerPush(to_push, callback, true);
+    }
+
+    private void registerPush(final PutPush to_push,
+                             final IPush callback, final boolean try_authenticate) {
+
+        Callback<Response> first_call = new Callback<Response>() {
+            @Override
+            public void success(Response answer, Response response) {
+                int code = response.getStatus();
+                android.util.Log.d("answer", "" + answer);
+                if (answer != null) {
+                    callback.onRegisterDone(answer);
+                } else {
+                    onError(code);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+                int code = error.getResponse() != null ? error.getResponse().getStatus() : 0;
+                callback.onRegisterError();
+
+                onError(code);
+            }
+
+            private void onError(int code) {
+                if (try_authenticate) {
+                    if (code == 401) {
+                        authenticate(new IAuthenticate() {
+                            @Override
+                            public void onSessionOk(String session) {
+                                registerPush(to_push, callback, false);
+                            }
+
+                            @Override
+                            public void onSessionError() {
+                                callback.onRegisterError();
+                            }
+                        });
+                    } else if (code == 403) {
+                        register(new IRegister() {
+                            @Override
+                            public void onRegisterOk(String session) {
+                                registerPush(to_push, callback, false);
+                            }
+
+                            @Override
+                            public void onRegisterError() {
+                                callback.onRegisterError();
+                            }
+                        });
+                    }
+                }
+            }
+        };
+
+        _web_interface.registerPush(to_push, first_call);
     }
 
     private List<DistantMessages> postMessageSync(PostMessage message_to_post, boolean try_authenticate) {

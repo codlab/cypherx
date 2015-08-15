@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import at.markushi.ui.RevealColorView;
@@ -40,9 +42,14 @@ import eu.codlab.cypherx.account.authenticator.AuthenticatorActivity;
 import eu.codlab.cypherx.database.DevicesController;
 import eu.codlab.cypherx.events.EventProxyOk;
 import eu.codlab.cypherx.events.OnDeviceLoaded;
+import eu.codlab.cypherx.events.OnGetRegistrationIdEvent;
 import eu.codlab.cypherx.events.OnLoadDevices;
+import eu.codlab.cypherx.events.OnRegistrationIdObtainedEvent;
 import eu.codlab.cypherx.events.OnShareEvent;
 import eu.codlab.cypherx.events.OpenDeviceActivity;
+import eu.codlab.cypherx.gcm.GcmBroadcastReceiver;
+import eu.codlab.cypherx.gcm.GcmIntentService;
+import eu.codlab.cypherx.tuto.TutoHelper;
 import eu.codlab.cypherx.ui.main.MainActivityController;
 import eu.codlab.cypherx.ui.main.RecyclerAdapter;
 import eu.codlab.cypherx.utils.FragmentStackManager;
@@ -65,7 +72,9 @@ public class MainActivity extends SystemFittableActivity {
     }
 
     private boolean _can_load;
+    private TutoHelper _tuto_helper;
 
+    @Nullable
     @Bind(R.id.collapsing)
     CollapsingToolbarLayout _collapsing_toolbar_layout;
 
@@ -77,16 +86,20 @@ public class MainActivity extends SystemFittableActivity {
 
     protected View mMenuView;
 
+    @Nullable
     @Bind(R.id.drawerLayout)
     protected DrawerLayout mDrawerLayout;
 
     @Bind(R.id.tor_switch)
     protected Switch _tor_switch;
 
+    @Bind(R.id.push_switch)
+    protected Switch _push_switch;
+
     @OnClick(R.id.main)
     public void onClickMain() {
         _can_load = false;
-        _recycler.setAdapter(new RecyclerAdapter());
+        _recycler.setAdapter(new RecyclerAdapter(this));
         closeDrawer();
     }
 
@@ -109,23 +122,39 @@ public class MainActivity extends SystemFittableActivity {
         _can_load = true;
         List<Device> devices = new ArrayList<>();
         devices.add(null);
-        _recycler.setAdapter(new RecyclerAdapter(devices));
+        _recycler.setAdapter(new RecyclerAdapter(this, devices));
         EventBus.getDefault().post(new OnLoadDevices());
         ApplicationController.getInstance().setHasSeen();
+    }
+
+    @OnClick(R.id.push)
+    public void onPushSwitch() {
+        if (_push_switch.isChecked()) {
+            ApplicationController.getInstance().setPushAuthorized(false);
+            _push_switch.setChecked(false);
+        } else {
+            ApplicationController.getInstance().setPushAuthorized(true);
+            GcmIntentService.start(this);
+        }
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        _tuto_helper = new TutoHelper();
+
         opened_create_account = false;
         mAccountManager = AccountManager.get(this);
         _can_load = false;
 
         getToolbar().setTitle(R.string.app_name);
-        _collapsing_toolbar_layout.setTitle(getString(R.string.app_name));
-        _collapsing_toolbar_layout.setCollapsedTitleTextColor(Color.WHITE);
-        _collapsing_toolbar_layout.setExpandedTitleColor(Color.WHITE);
+        if (_collapsing_toolbar_layout != null) {
+            _collapsing_toolbar_layout.setTitle(getString(R.string.app_name));
+            _collapsing_toolbar_layout.setCollapsedTitleTextColor(Color.WHITE);
+            _collapsing_toolbar_layout.setExpandedTitleColor(Color.WHITE);
+        }
 
         setInsets();
 
@@ -133,39 +162,53 @@ public class MainActivity extends SystemFittableActivity {
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         _recycler.setLayoutManager(manager);
         if (ApplicationController.getInstance().hasSeen()) {
-            _recycler.setAdapter(new RecyclerAdapter(new ArrayList<Device>()));
+            _recycler.setAdapter(new RecyclerAdapter(this, new ArrayList<Device>()));
             _should_load_devices = true;
         } else {
-            _recycler.setAdapter(new RecyclerAdapter());
+            _recycler.setAdapter(new RecyclerAdapter(this));
         }
 
-        _actionbar_toggle = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,         /* DrawerLayout object */
-                getToolbar(),
-                0,
-                0) {
+        if (mDrawerLayout != null) {
+            _actionbar_toggle = new ActionBarDrawerToggle(
+                    this,
+                    mDrawerLayout,         /* DrawerLayout object */
+                    getToolbar(),
+                    0,
+                    0) {
 
-            /**
-             * Called when a drawer has settled in a completely closed state.
-             */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-            }
+                /**
+                 * Called when a drawer has settled in a completely closed state.
+                 */
+                public void onDrawerClosed(View view) {
+                    super.onDrawerClosed(view);
+                }
 
-            /**
-             * Called when a drawer has settled in a completely open state.
-             */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                hideKeyboard(mDrawerLayout);
-            }
-        };
+                /**
+                 * Called when a drawer has settled in a completely open state.
+                 */
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    hideKeyboard(mDrawerLayout);
 
-        mDrawerLayout.setDrawerListener(_actionbar_toggle);
+                    getTutoHelper().openTuto(MainActivity.this, "TUTORIAL_SHARE2",
+                            R.string.tutorial_tor_title, R.string.tutorial_tor_text,
+                            _tor_switch);
+
+                    getTutoHelper().openTuto(MainActivity.this, "TUTORIAL_SHARE3",
+                            R.string.tutorial_push_title, R.string.tutorial_push_text,
+                            _push_switch);
+
+                }
+            };
+            mDrawerLayout.setDrawerListener(_actionbar_toggle);
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        if (ApplicationController.getInstance().hasPushAuthorized()) {
+            GcmIntentService.start(this);
+        }
     }
 
     @Override
@@ -179,6 +222,9 @@ public class MainActivity extends SystemFittableActivity {
     @Override
     public void onResume() {
         super.onResume();
+
+        GcmBroadcastReceiver.removeNotification(this);
+
         if (hasAccount()) {
 
             EventBus.getDefault().register(this);
@@ -296,7 +342,7 @@ public class MainActivity extends SystemFittableActivity {
         if (item != null) {
             switch (item.getItemId()) {
                 case android.R.id.home:
-                    if (getFragmentStackManager().isNavigationDrawerEnabled()) {
+                    if (mDrawerLayout != null && getFragmentStackManager().isNavigationDrawerEnabled()) {
                         mDrawerLayout.openDrawer(GravityCompat.START);
                     } else {
                         onBackPressed();
@@ -318,8 +364,15 @@ public class MainActivity extends SystemFittableActivity {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        boolean changed = newConfig.orientation != getResources().getConfiguration().orientation;
         super.onConfigurationChanged(newConfig);
         _actionbar_toggle.onConfigurationChanged(newConfig);
+
+        if (changed) {
+            if(_tuto_helper != null)
+                _tuto_helper.clean();
+            _tuto_helper = new TutoHelper();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)
@@ -329,7 +382,7 @@ public class MainActivity extends SystemFittableActivity {
     }
 
     private boolean isDrawerOpen() {
-        return mDrawerLayout.isDrawerOpen(GravityCompat.START);
+        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(GravityCompat.START);
     }
 
     private void setupDrawer() {
@@ -338,23 +391,27 @@ public class MainActivity extends SystemFittableActivity {
         mMenuView.setPadding(0, getPaddingInsetTop(false), 0, 0);
 
 
-        getToolbar().setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                } else {
-                    mDrawerLayout.openDrawer(GravityCompat.START);
+        if (mDrawerLayout != null) {
+            getToolbar().setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                    } else {
+                        mDrawerLayout.openDrawer(GravityCompat.START);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     protected void setupToolbar() {
         Toolbar toolbar = getToolbar();
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.ic_menu_white);
+            if (mDrawerLayout != null) {
+                toolbar.setNavigationIcon(R.drawable.ic_menu_white);
+            }
             toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         }
     }
@@ -384,7 +441,7 @@ public class MainActivity extends SystemFittableActivity {
             event = new OnDeviceLoaded(list);
         }
         EventBus.getDefault().postSticky(event);
-        List<Device> devices = DevicesController.getInstance(this).findAll();
+        List<Device> devices = DevicesController.getInstance(this).findAllOrderByLastAtDesc();
         event = new OnDeviceLoaded(devices);
         EventBus.getDefault().postSticky(event);
     }
@@ -392,19 +449,25 @@ public class MainActivity extends SystemFittableActivity {
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(OnDeviceLoaded devices) {
         if (_can_load) {
-            _recycler.setAdapter(new RecyclerAdapter(devices.getDevices()));
+            _recycler.setAdapter(new RecyclerAdapter(this, devices.getDevices()));
             closeDrawer();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(OpenDeviceActivity event) {
+
+        event.getDevice().setLast_open_at(new Date());
+        DevicesController.getInstance(this).getDao().insertOrReplace(event.getDevice());
         DiscutionActivity.startDiscutionActivity(this, event.getDevice().getGuid());
+        if (event.getAdapter() != null)
+            event.getAdapter().notifyDataSetChanged();
     }
 
 
     private void closeDrawer() {
-        mDrawerLayout.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout != null)
+            mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 
 
@@ -433,5 +496,23 @@ public class MainActivity extends SystemFittableActivity {
                         }
                     }
                 }, null);
+    }
+
+    @Subscribe(threadMode = ThreadMode.Async)
+    public void onGetRegistrationIdEvent(OnGetRegistrationIdEvent event) {
+        if (event != null) {
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onRegistrationIdObtained(OnRegistrationIdObtainedEvent event) {
+        if (event != null && event.getRegistrationId() != null) {
+            _push_switch.setChecked(true);
+        }
+    }
+
+
+    public TutoHelper getTutoHelper() {
+        return _tuto_helper;
     }
 }

@@ -1,1 +1,1 @@
-include ':app', ':daogenerator', 'libraries:netcipher:libnetcipher'
+include ':app', ':daogenerator', 'libraries:netcipher:libnetcipher', ':emojicon:lib', ':showcase:library'

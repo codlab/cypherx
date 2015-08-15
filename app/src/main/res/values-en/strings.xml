@@ -41,4 +41,12 @@
 <string name="markdown_share_with">share_with_en.md</string>
 <string name="markdown_debug">debug_en.md</string>
 <string name="markdown_enhance">enhance_en.md</string>
+<string name="gcm_title">New messages from the cloud</string>
+<string name="gcm_message">Someone just send you a message. Click here to open the app and manually load the messages.</string>
+<string name="tutorial_share_title">Share your information</string>
+<string name="tutorial_share_text">You can share your public information. This way, your friends can send you messages !</string>
+<string name="tutorial_push_title">Activate Push notifications</string>
+<string name="tutorial_push_text">The push notifications let you receive the messages instantly. They use the Google Play Services</string>
+<string name="tutorial_tor_title">Tor</string>
+<string name="tutorial_tor_text">Use Tor as the network layer of the app with all its benefits</string>
 </resources>

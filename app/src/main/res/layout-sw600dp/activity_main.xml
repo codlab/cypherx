@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="horizontal">
+
+
+    <ScrollView
+        android:id="@+id/vLeftDrawer"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/navigation_drawer_width"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/nsa_display" />
+
+            <LinearLayout
+                android:layout_width="@dimen/navigation_drawer_width"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/main"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/main_left"
+                    android:clickable="true"
+                    android:orientation="horizontal">
+
+                    <eu.codlab.cypherx.views.IconTextView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="a"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
+
+                    <com.devspark.robototextview.widget.RobotoTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:text="@string/main"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/navigation_drawer_width"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/main_left"
+                    android:clickable="true"
+                    android:orientation="horizontal">
+
+                    <eu.codlab.cypherx.views.IconTextView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="f"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
+
+                    <com.devspark.robototextview.widget.RobotoTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:text="@string/chat"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/navigation_drawer_width"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/clone"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/main_left"
+                    android:clickable="true"
+                    android:orientation="horizontal">
+
+                    <eu.codlab.cypherx.views.IconTextView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="i"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
+
+                    <com.devspark.robototextview.widget.RobotoTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:text="@string/clone_me"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/navigation_drawer_width"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/tor"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/main_left"
+                    android:clickable="true"
+                    android:orientation="horizontal">
+
+                    <eu.codlab.cypherx.views.IconTextView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="k"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
+
+                    <com.devspark.robototextview.widget.RobotoTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:text="@string/tor"
+                        android:textColor="@color/black" />
+
+                    <eu.codlab.cypherx.views.Switch
+                        android:id="@+id/tor_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/navigation_drawer_width"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/push"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/main_left"
+                    android:clickable="true"
+                    android:orientation="horizontal">
+
+                    <eu.codlab.cypherx.views.IconTextView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="r"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
+
+                    <com.devspark.robototextview.widget.RobotoTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:text="@string/push"
+                        android:textColor="@color/black" />
+
+                    <eu.codlab.cypherx.views.Switch
+                        android:id="@+id/push_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <at.markushi.ui.RevealColorView
+            android:id="@+id/reveal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="top"
+                    android:background="@color/colorPrimary"
+                    android:minHeight="?attr/actionBarSize"
+                    android:textColor="@color/white"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="enterAlways"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            </LinearLayout>
+        </android.support.design.widget.CoordinatorLayout>
+    </FrameLayout>
+</LinearLayout>

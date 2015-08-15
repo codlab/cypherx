@@ -1,10 +1,16 @@
 package eu.codlab.cypherx.ui.main;
 
+import android.app.Activity;
+import android.graphics.Typeface;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.devspark.robototextview.util.RobotoTextViewUtils;
+import com.devspark.robototextview.util.RobotoTypefaceManager;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -13,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import eu.codlab.cypherx.MainActivity;
 import eu.codlab.cypherx.R;
 import eu.codlab.cypherx.events.OnShareEvent;
 import eu.codlab.cypherx.events.OpenDeviceActivity;
@@ -24,7 +31,7 @@ import greendao.Message;
  * Created by kevinleperf on 04/07/15.
  */
 public class RecyclerAdapter extends RecyclerView.Adapter {
-    private final static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSSZ");
+    private final static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy '@' HH:mm");
     private List<Device> _devices;
     private int TEXTVIEWHOLDER = 0;
     private int SHARE_VIEW_HOLDER = 1;
@@ -32,6 +39,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
     private int AREA_DEVICE = 3;
     private int AREA_DEVICE_EMPTY = 4;
     private int AREA_DEVICE_LOADING = 5;
+
+    private Activity _activity;
 
     public class AreaDevice extends RecyclerView.ViewHolder {
         private Device _device;
@@ -44,7 +53,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
 
         @OnClick(R.id.card_view)
         public void onShareClick() {
-            EventBus.getDefault().post(new OpenDeviceActivity(_device));
+            EventBus.getDefault().post(new OpenDeviceActivity(_device, RecyclerAdapter.this));
         }
 
         public AreaDevice(View itemView) {
@@ -57,7 +66,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private class DescriptionViewHolder extends RecyclerView.ViewHolder {
+    public class DescriptionViewHolder extends RecyclerView.ViewHolder {
+
+        @Nullable
+        @OnClick(R.id.share)
+        public void onShareClick() {
+            EventBus.getDefault().post(new OnShareEvent());
+        }
+
         public DescriptionViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -102,7 +118,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
         }
 
 
-        public void setShareInformation(MarkdownView view, int asset){
+        public void setShareInformation(MarkdownView view, int asset) {
             view.setAssetContent(itemView.getContext().getString(asset));
         }
     }
@@ -117,11 +133,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public RecyclerAdapter() {
-
+    public RecyclerAdapter(Activity activity) {
+        _activity = activity;
     }
 
-    public RecyclerAdapter(List<Device> devices) {
+    public RecyclerAdapter(Activity activity, List<Device> devices) {
+        _activity = activity;
         _devices = devices;
     }
 
@@ -166,7 +183,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
         return DESCRIPTION_VIEW_HOLDER;
     }
 
-    private void setShareInformation(MarkdownView view, RecyclerView.ViewHolder v, int asset){
+    private void setShareInformation(MarkdownView view, RecyclerView.ViewHolder v, int asset) {
         view.setAssetContent(v.itemView.getContext().getString(asset));
     }
 
@@ -182,6 +199,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
 
         } else if (viewHolder instanceof TextViewHolder) {
             ((TextViewHolder) viewHolder)._view.setText("info " + position);
+        } else if (viewHolder instanceof DescriptionViewHolder) {
+            View share_target = viewHolder.itemView.findViewById(R.id.share);
+            if (share_target != null) {
+                ((MainActivity) _activity).getTutoHelper()
+                        .openTuto(_activity, "TUTORIAL_SHARE",
+                                R.string.tutorial_share_title, R.string.tutorial_share_text,
+                                share_target);
+            }
+        } else if (viewHolder instanceof ShareViewHolder) {
+            ((MainActivity) _activity).getTutoHelper()
+                    .openTuto(_activity, "TUTORIAL_SHARE",
+                            R.string.tutorial_share_title, R.string.tutorial_share_text,
+                            R.id.share, viewHolder.itemView);
         } else if (viewHolder instanceof AreaDevice) {
             Device device = _devices.get(position);
             ((AreaDevice) viewHolder).setDevice(device);
@@ -195,6 +225,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
                 information = viewHolder.itemView.getContext()
                         .getString(R.string.device_information_no_message);
             }
+
+
+            if ((device.getLast_message_at() != null && device.getLast_open_at() == null)
+                    ||
+                    (device.getLast_message_at() != null &&
+                            device.getLast_open_at() != null
+                            && device.getLast_message_at().getTime() >= device.getLast_open_at().getTime())) {
+                Typeface typeface = RobotoTypefaceManager.obtainTypeface(
+                        viewHolder.itemView.getContext(),
+                        RobotoTypefaceManager.FontFamily.ROBOTO,
+                        RobotoTypefaceManager.TextWeight.BOLD,
+                        RobotoTypefaceManager.TextStyle.NORMAL);
+                RobotoTextViewUtils.setTypeface(((AreaDevice) viewHolder)._information, typeface);
+                RobotoTextViewUtils.setTypeface(((AreaDevice) viewHolder)._name, typeface);
+            } else {
+                Typeface typeface = RobotoTypefaceManager.obtainTypeface(
+                        viewHolder.itemView.getContext(),
+                        RobotoTypefaceManager.FontFamily.ROBOTO,
+                        RobotoTypefaceManager.TextWeight.LIGHT,
+                        RobotoTypefaceManager.TextStyle.NORMAL);
+                RobotoTextViewUtils.setTypeface(((AreaDevice) viewHolder)._information, typeface);
+                RobotoTextViewUtils.setTypeface(((AreaDevice) viewHolder)._name, typeface);
+            }
+
             ((AreaDevice) viewHolder)._information.setText(information);
             ((AreaDevice) viewHolder)._name.setText(device.getGuid());
         }

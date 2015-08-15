@@ -1,5 +1,6 @@
 package eu.codlab.cypherx.events;
 
+import eu.codlab.cypherx.ui.main.RecyclerAdapter;
 import greendao.Device;
 
 /**
@@ -7,12 +8,18 @@ import greendao.Device;
  */
 public class OpenDeviceActivity {
     private Device _device;
+    private RecyclerAdapter _adapter;
 
-    public OpenDeviceActivity(Device device) {
+    public OpenDeviceActivity(Device device, RecyclerAdapter adapter) {
         _device = device;
+        _adapter = adapter;
     }
 
     public Device getDevice(){
         return _device;
+    }
+
+    public RecyclerAdapter getAdapter(){
+        return _adapter;
     }
 }

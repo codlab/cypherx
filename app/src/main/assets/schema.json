@@ -29,6 +29,14 @@
           "type": "string",
           "name": "key",
           "mandatory": true
+        },
+        {
+          "type": "date",
+          "name": "last_open_at"
+        },
+        {
+          "type": "date",
+          "name": "last_message_at"
         }
       ]
     },

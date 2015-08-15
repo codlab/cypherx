@@ -44,6 +44,7 @@ public class MessagesController extends AbstractController<MessageDao> {
 
     public void onMessages(List<DistantMessages> messages) {
         if (messages != null) {
+            DevicesController ctrl = DevicesController.getInstance(null);
             Date received_at = new Date();
             lock();
             for (DistantMessages distant_message : messages) {
@@ -55,6 +56,12 @@ public class MessagesController extends AbstractController<MessageDao> {
                 message.setReceived_at(received_at);
                 message.setType(MessageConstants.RECEIVED);
                 getDao().insertOrReplace(message);
+
+                Device device = ctrl.getDevice(distant_message.getSender());
+                if (device != null){
+                    device.setLast_message_at(received_at);
+                    ctrl.getDao().insertOrReplace(device);
+                }
             }
             unlock();
         }

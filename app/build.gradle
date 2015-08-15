@@ -1,15 +1,20 @@
 buildscript {
     repositories {
+        jcenter()
         maven { url 'https://maven.fabric.io/public' }
         maven { url "https://jitpack.io" }
     }
 
     dependencies {
+        classpath 'com.google.gms:google-services:1.3.0-beta1'
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
+
+
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'com.google.gms.google-services'
 
 repositories {
     maven { url "https://jitpack.io" }
@@ -26,8 +31,8 @@ android {
         applicationId "eu.codlab.cypherx"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
     }
 
     sourceSets {
@@ -43,6 +48,17 @@ android {
         }
     }
 
+    productFlavors {
+        staging {
+            buildConfigField "String", "ENDPOINT", "\"http://cypher.codlab.eu/\""
+        }
+
+        production {
+            buildConfigField "String", "ENDPOINT", "\"https://cypher.codlab.eu/\""
+        }
+    }
+
+
     testOptions {
         unitTests.returnDefaultValues = true
     }
@@ -56,10 +72,13 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'
 
+    compile 'com.google.android.gms:play-services-gcm:7.5.0'
+
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.github.markushi:android-ui:1.2'
-    compile 'eu.codlab:mutex_shared:0.9.1'
+    compile 'eu.codlab:android_process_mutex:0.9.3'
     compile 'eu.codlab:android_crypto:1.3'
+    compile 'com.rockerhieu.emojicon:library:1.3.1'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.4.0'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.jakewharton:butterknife:7.0.1'
@@ -67,6 +86,8 @@ dependencies {
     compile 'de.greenrobot:greendao:1.3.7'
     compile 'com.robbypond:material-dialogs:1.0.0'
     compile 'com.github.rahatarmanahmed:circularprogressview:2.3.2'
+    compile project(':showcase:library')
+    compile project(':emojicon:lib')
 
     compile project(':libraries:netcipher:libnetcipher')
     compile('com.crashlytics.sdk.android:crashlytics:2.4.0@aar') {

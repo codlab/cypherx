@@ -7,7 +7,9 @@ import java.util.List;
 import eu.codlab.cypherx.webservice.models.Authent;
 import eu.codlab.cypherx.webservice.models.DistantMessages;
 import eu.codlab.cypherx.webservice.models.PostMessage;
+import eu.codlab.cypherx.webservice.models.PutPush;
 import retrofit.Callback;
+import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
@@ -40,5 +42,8 @@ public interface IWebInterface {
 
     @PUT("/x/messages")
     public List<DistantMessages> postMessagesSync(@Body PostMessage post);
+
+    @PUT("/x/push")
+    public void registerPush(@Body PutPush push, Callback<Response> result);
 
 }

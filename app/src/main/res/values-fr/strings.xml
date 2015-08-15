@@ -41,4 +41,12 @@
 <string name="markdown_share_with">share_with_fr.md</string>
 <string name="markdown_debug">debug_fr.md</string>
 <string name="markdown_enhance">enhance_fr.md</string>
+<string name="gcm_title">Nouveau messages dans le cloud</string>
+<string name="gcm_message">Quelqu\'un vient de vous envoyer un message. Cliquez ici pour lancer l\'application et charger les messages web.</string>
+<string name="tutorial_share_title">Partagez vos informations</string>
+<string name="tutorial_share_text">Vous pouvez partager vos informations. Comme cela, vos amis peuvent facilement vous envoyer des messages !</string>
+<string name="tutorial_push_title">Activez les push</string>
+<string name="tutorial_push_text">Les push vous permettent de recevoir instantannément les messages. Ils utilisent les Google Play Services.</string>
+<string name="tutorial_tor_title">Tor</string>
+<string name="tutorial_tor_text">Utilisez Tor dans l\'application pour profiter de tout ses avantages</string>
 </resources>

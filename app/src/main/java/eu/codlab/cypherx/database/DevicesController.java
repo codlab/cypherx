@@ -41,7 +41,7 @@ public class DevicesController extends AbstractController<DeviceDao> {
     }
 
     public DevicesController addDevice(String guid, String public_key) {
-        addDevice(new Device(0l, guid, public_key));
+        addDevice(new Device(0l, guid, public_key, null, null));
         return this;
     }
 
@@ -75,8 +75,9 @@ public class DevicesController extends AbstractController<DeviceDao> {
         return DatabaseManager.getInstance().getSession().getDeviceDao();
     }
 
-    public List<Device> findAll() {
-        List<Device> list = getDao().loadAll();
+    public List<Device> findAllOrderByLastAtDesc() {
+        List<Device> list = getDao().queryBuilder()
+                .orderDesc(DeviceDao.Properties.Last_message_at).list();
         for (Device device : list) {
             device.getLastMessage();
         }

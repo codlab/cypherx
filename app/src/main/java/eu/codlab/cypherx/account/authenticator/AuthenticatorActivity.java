@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 /**
@@ -36,6 +37,11 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
             finish();
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration configuration) {
+
     }
 
     protected void setAccountOK() {

@@ -10,4 +10,5 @@ public class OnMessageToDecryptEvent {
     public MessagesCursor.ViewHolder receiver;
     public Message to_decrypt;
     public long id;
+    public long position;
 }

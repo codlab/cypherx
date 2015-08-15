@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.gson.JsonObject;
-
 import java.security.PrivateKey;
 import java.security.SecureRandom;
 
@@ -58,12 +56,21 @@ public class MessagesCursor extends CursorRecyclerViewAdapter<MessagesCursor.Vie
         public TextView _status;
 
         private long _id;
+        private long _cursor_id = -1;
 
-        public long getId(){
+        public long getCursorId() {
+            return _cursor_id;
+        }
+
+        public void setCursorId(long cursor_id) {
+            _cursor_id = cursor_id;
+        }
+
+        public long getId() {
             return _id;
         }
 
-        public void setId(long id){
+        public void setId(long id) {
             _id = id;
         }
 
@@ -100,18 +107,19 @@ public class MessagesCursor extends CursorRecyclerViewAdapter<MessagesCursor.Vie
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, Cursor cursor) {
-        viewHolder.setId(_random.nextLong());
-
         Message message_entity = Message.fromCursor(cursor);
+        if (viewHolder.getCursorId() != message_entity.getId()) {
+            viewHolder.setId(_random.nextLong());
+            OnMessageToDecryptEvent event = new OnMessageToDecryptEvent();
+            event.id = viewHolder.getId();
+            event.receiver = viewHolder;
+            event.to_decrypt = message_entity;
+            event.position = message_entity.getId();
 
-        OnMessageToDecryptEvent event = new OnMessageToDecryptEvent();
-        event.id = viewHolder.getId();
-        event.receiver = viewHolder;
-        event.to_decrypt = message_entity;
+            viewHolder._message.setText(R.string.decoding);
+            viewHolder._status.setText("");
 
-        viewHolder._message.setText(R.string.decoding);
-        viewHolder._status.setText("");
-
-        EventBus.getDefault().post(event);
+            EventBus.getDefault().post(event);
+        }
     }
 }

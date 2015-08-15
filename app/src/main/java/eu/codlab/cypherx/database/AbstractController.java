@@ -17,7 +17,7 @@ public abstract class AbstractController<T extends AbstractDao> {
     protected AbstractController() {
         synchronized (object) {
             if (_mutex == null) {
-                _mutex = new Mutex("cypherX");
+                _mutex = new Mutex();
             }
         }
     }

@@ -34,7 +34,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="false"
-                    android:text="some contextual information"
+                    android:text=""
+                    android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <com.devspark.robototextview.widget.RobotoTextView
@@ -44,7 +45,7 @@
                     android:layout_marginTop="@dimen/min_margin"
                     android:gravity="right"
                     android:singleLine="false"
-                    android:text="some contextual information"
+                    android:text=""
                     android:textSize="10sp"
                     app:fontFamily="roboto"
                     app:textStyle="italic"

@@ -10,4 +10,5 @@ public class OnMessageDecryptedEvent {
     public String content;
     public String status;
     public long id;
+    public long position;
 }

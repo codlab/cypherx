@@ -21,12 +21,18 @@ import eu.codlab.cypherx.ui.messages.MessageConstants;
 public class Message {
 
     private Long id;
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     private String device_guid;
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     private String encrypted_content;
     private String encrypted_content_local;
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     private java.util.Date received_at;
     private int type;
     private String signature;
@@ -59,22 +65,30 @@ public class Message {
         this.id = id;
     }
 
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     public String getDevice_guid() {
         return device_guid;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
+    /**
+     * Not-null value; ensure this value is available before it is saved to the database.
+     */
     public void setDevice_guid(String device_guid) {
         this.device_guid = device_guid;
     }
 
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     public String getEncrypted_content() {
         return encrypted_content;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
+    /**
+     * Not-null value; ensure this value is available before it is saved to the database.
+     */
     public void setEncrypted_content(String encrypted_content) {
         this.encrypted_content = encrypted_content;
     }
@@ -87,12 +101,16 @@ public class Message {
         this.encrypted_content_local = encrypted_content_local;
     }
 
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     public java.util.Date getReceived_at() {
         return received_at;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
+    /**
+     * Not-null value; ensure this value is available before it is saved to the database.
+     */
     public void setReceived_at(java.util.Date received_at) {
         this.received_at = received_at;
     }
@@ -145,6 +163,7 @@ public class Message {
     public static Message fromCursor(Cursor cursor) {
         Message message = new Message();
 
+        int column_id_db = cursor.getColumnIndex(MessageDao.Properties.Id.columnName);
         int column_index = cursor.getColumnIndex(MessageDao.Properties.Encrypted_content.columnName);
         int colom_local_index = cursor.getColumnIndex(MessageDao.Properties
                 .Encrypted_content_local.columnName);
@@ -155,6 +174,7 @@ public class Message {
         int type_index = cursor.getColumnIndex(MessageDao.Properties
                 .Type.columnName);
 
+        message.setId(cursor.getLong(column_id_db));
         message.setEncrypted_content(cursor.getString(column_index));
         message.setEncrypted_content_local(cursor.getString(colom_local_index));
         message.setType(cursor.getInt(type_index));

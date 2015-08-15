@@ -6,7 +6,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+    <style name="FullscreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@null</item>
     </style>
@@ -16,6 +16,14 @@
         <item name="android:dropDownSelector">?android:selectableItemBackground</item>
         <item name="android:divider">@null</item>
         <item name="overlapAnchor">true</item>
+    </style>
+
+
+    <style name="ShowcaseViewCypher">
+        <item name="sv_titleTextAppearance">@style/TextAppearance.ShowcaseView.Title</item>
+        <item name="sv_detailTextAppearance">@style/TextAppearance.ShowcaseView.Detail</item>
+        <item name="sv_backgroundColor">#b42b2b2e</item>
+        <item name="sv_buttonText">@android:string/ok</item>
     </style>
 
 </resources>

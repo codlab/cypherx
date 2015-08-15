@@ -6,9 +6,19 @@
     android:orientation="vertical">
 
     <com.devspark.robototextview.widget.RobotoTextView
-        android:layout_width="150dp"
-        android:layout_height="match_parent"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/empty_devices"
-        android:textSize="10sp" />
+        android:layout_marginBottom="@dimen/default_margin"
+        android:textSize="@dimen/tiny" />
+
+    <eu.codlab.cypherx.views.ButtonRectangle
+        android:id="@+id/share"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_gravity="top|center_horizontal"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/action_share" />
 </LinearLayout>

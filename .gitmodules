@@ -4,3 +4,9 @@
 [submodule "libraries/netcipher"]
 	path = libraries/netcipher
 	url = https://github.com/codlab/NetCipher
+[submodule "emojicon"]
+	path = emojicon
+	url = git@github.com:codlab/emojicon.git
+[submodule "showcase"]
+	path = showcase
+	url = git@github.com:codlab/ShowcaseView.git

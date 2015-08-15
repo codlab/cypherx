@@ -26,6 +26,8 @@ public class DeviceDao extends AbstractDao<Device, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Guid = new Property(1, String.class, "guid", false, "GUID");
         public final static Property Key = new Property(2, String.class, "key", false, "KEY");
+        public final static Property Last_open_at = new Property(3, java.util.Date.class, "last_open_at", false, "LAST_OPEN_AT");
+        public final static Property Last_message_at = new Property(4, java.util.Date.class, "last_message_at", false, "LAST_MESSAGE_AT");
     };
 
 
@@ -43,7 +45,9 @@ public class DeviceDao extends AbstractDao<Device, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'DEVICE' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'GUID' TEXT NOT NULL ," + // 1: guid
-                "'KEY' TEXT NOT NULL );"); // 2: key
+                "'KEY' TEXT NOT NULL ," + // 2: key
+                "'LAST_OPEN_AT' INTEGER," + // 3: last_open_at
+                "'LAST_MESSAGE_AT' INTEGER);"); // 4: last_message_at
     }
 
     /** Drops the underlying database table. */
@@ -63,6 +67,16 @@ public class DeviceDao extends AbstractDao<Device, Long> {
         }
         stmt.bindString(2, entity.getGuid());
         stmt.bindString(3, entity.getKey());
+ 
+        java.util.Date last_open_at = entity.getLast_open_at();
+        if (last_open_at != null) {
+            stmt.bindLong(4, last_open_at.getTime());
+        }
+ 
+        java.util.Date last_message_at = entity.getLast_message_at();
+        if (last_message_at != null) {
+            stmt.bindLong(5, last_message_at.getTime());
+        }
     }
 
     /** @inheritdoc */
@@ -77,7 +91,9 @@ public class DeviceDao extends AbstractDao<Device, Long> {
         Device entity = new Device( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // guid
-            cursor.getString(offset + 2) // key
+            cursor.getString(offset + 2), // key
+            cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // last_open_at
+            cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)) // last_message_at
         );
         return entity;
     }
@@ -88,6 +104,8 @@ public class DeviceDao extends AbstractDao<Device, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setGuid(cursor.getString(offset + 1));
         entity.setKey(cursor.getString(offset + 2));
+        entity.setLast_open_at(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
+        entity.setLast_message_at(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
      }
     
     /** @inheritdoc */

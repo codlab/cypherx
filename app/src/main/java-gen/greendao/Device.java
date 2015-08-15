@@ -15,21 +15,18 @@ import eu.codlab.crypto.core.utils.Constants;
 import eu.codlab.cypherx.ApplicationController;
 import eu.codlab.cypherx.database.MessagesController;
 // KEEP INCLUDES END
-
 /**
  * Entity mapped to table DEVICE.
  */
 public class Device {
 
     private Long id;
-    /**
-     * Not-null value.
-     */
+    /** Not-null value. */
     private String guid;
-    /**
-     * Not-null value.
-     */
+    /** Not-null value. */
     private String key;
+    private java.util.Date last_open_at;
+    private java.util.Date last_message_at;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -41,10 +38,12 @@ public class Device {
         this.id = id;
     }
 
-    public Device(Long id, String guid, String key) {
+    public Device(Long id, String guid, String key, java.util.Date last_open_at, java.util.Date last_message_at) {
         this.id = id;
         this.guid = guid;
         this.key = key;
+        this.last_open_at = last_open_at;
+        this.last_message_at = last_message_at;
     }
 
     public Long getId() {
@@ -55,32 +54,40 @@ public class Device {
         this.id = id;
     }
 
-    /**
-     * Not-null value.
-     */
+    /** Not-null value. */
     public String getGuid() {
         return guid;
     }
 
-    /**
-     * Not-null value; ensure this value is available before it is saved to the database.
-     */
+    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setGuid(String guid) {
         this.guid = guid;
     }
 
-    /**
-     * Not-null value.
-     */
+    /** Not-null value. */
     public String getKey() {
         return key;
     }
 
-    /**
-     * Not-null value; ensure this value is available before it is saved to the database.
-     */
+    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public java.util.Date getLast_open_at() {
+        return last_open_at;
+    }
+
+    public void setLast_open_at(java.util.Date last_open_at) {
+        this.last_open_at = last_open_at;
+    }
+
+    public java.util.Date getLast_message_at() {
+        return last_message_at;
+    }
+
+    public void setLast_message_at(java.util.Date last_message_at) {
+        this.last_message_at = last_message_at;
     }
 
     // KEEP METHODS - put your custom methods here
@@ -118,7 +125,6 @@ public class Device {
         return MessagesController.getInstance(ApplicationController.getInstance())
                 .getMessagesCount(this);
     }
-
     // KEEP METHODS END
 
 }

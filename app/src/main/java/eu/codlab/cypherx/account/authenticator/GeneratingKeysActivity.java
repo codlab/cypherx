@@ -1,5 +1,6 @@
 package eu.codlab.cypherx.account.authenticator;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -53,6 +54,11 @@ public class GeneratingKeysActivity extends SystemFittableActivity {
             }
         };
         t.start();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration configuration){
+
     }
 
     @Override
