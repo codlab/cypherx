@@ -1,7 +1,6 @@
 package eu.codlab.cypherx.tuto;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
@@ -30,14 +29,13 @@ public class TutoHelper {
 
     public void openTuto(Activity activity, final String key, final int title, int text,
                          int id, View target) {
-        Log.d("TutoHelper", "openTuto");
         ViewTarget view_target = null;
         if (id != 0)
             view_target = new ViewTarget(id, target);
         else
             view_target = new ViewTarget(target);
 
-        if (!ApplicationController.getInstance().getBoolean(key + System.currentTimeMillis(), false)) {
+        if (!ApplicationController.getInstance().getBoolean(key, false)) {
             ShowcaseView.Builder builder = new ShowcaseView.Builder(activity)
                     .setContentText(text)
                     .setContentTitle(title)
@@ -74,13 +72,11 @@ public class TutoHelper {
     }
 
     private void pop() {
-        Log.d("TutoHelper", "pop");
         if (_builders.size() > 0) _builders.remove(0);
     }
 
     private void showNext() {
         if (_builders.size() > 0) {
-            Log.d("TutoHelper", "showNext show builder element");
             _last_view = _builders.get(0).build();
             _last_view.show();
         }
