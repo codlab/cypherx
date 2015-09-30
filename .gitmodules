@@ -10,3 +10,6 @@
 [submodule "greendao"]
 	path = greendao
 	url = git@github.com:Codlabtech/greenDAO.git
+[submodule "daogenerator"]
+	path = daogenerator
+	url = git@github.com:codlab/daogenerator_android.git
